@@ -25,39 +25,39 @@ library(RColorBrewer) #for map color schemes
 library(scales)
 
 #----set working directory
-setwd("C:\\Users\hemis\\OneDrive\\Documents\\GitHub\\lesotho-basotho-wool\lesotho-basotho-wool")
+setwd("C://Users//hemis//OneDrive//Documents//GitHub//lesotho-basotho-wool//lesotho-basotho-wool//data")
 
 #----import data
-b_wool_2v <- read.csv("cleaned_basotho_wool.csv")
+b_wool_2v <- read.csv("data/cleaned_basotho_wool.csv")
 
-data_dict <- read.csv("cleaned_data_dictionary.csv")
+data_dict <- read.csv("data/cleaned_data_dictionary.csv")
 
 #for the maps
-merged_world <- read.csv("merged_world.csv")
+merged_world <- read.csv("data/merged_world.csv")
 
-merged_valid <- read.csv("merged_valid.csv")
+merged_valid <- read.csv("data/merged_valid.csv")
 
-merged_na <- read.csv("merged_na.csv")
+merged_na <- read.csv("data/merged_na.csv")
 
 #for the heat map
-merged_all <- read.csv("merged_allyrs_allcountries.csv")
+merged_all <- read.csv("data/merged_allyrs_allcountries.csv")
 
-china <- read.csv("china_allyrs.csv")
+china <- read.csv("data/china_allyrs.csv")
 
-india <- read.csv("india_allyrs.csv")
+india <- read.csv("data/india_allyrs.csv")
 
-south_africa <- read.csv("south_africa_allyrs.csv")
+south_africa <- read.csv("data/south_africa_allyrs.csv")
                  
-uruguay <- read.csv("uruguay_allyrs.csv")
+uruguay <- read.csv("data/uruguay_allyrs.csv")
 
 #for the takeaways
-importer <- read.csv("importer.csv")
+importer <- read.csv("data/importer.csv")
   
-top_year <- read.csv("top_year.csv")
+top_year <- read.csv("data/top_year.csv")
   
-most_revenue <- read.csv("most_revenue.csv")
+most_revenue <- read.csv("data/most_revenue.csv")
 
-busy_season <- read.csv("busy_season.csv")
+busy_season <- read.csv("data/busy_season.csv")
 
 ```
 
