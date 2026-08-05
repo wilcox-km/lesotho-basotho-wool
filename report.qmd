@@ -41,7 +41,7 @@ merged_na <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basot
 
 merged_all <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_allyrs_allcountries.csv")
 china <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
-india <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
+india <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/india_allyrs.csv")
 south_africa <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/south_africa_allyrs.csv")            
 uruguay <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/uruguay_allyrs.csv")
 
