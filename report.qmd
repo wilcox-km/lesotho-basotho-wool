@@ -5,7 +5,7 @@ date-modified: today
 format:
   dashboard:
     scrollable: true
-    theme: United #view others: https://bootswatch.com/
+    theme: united #view others: https://bootswatch.com/
     nav-buttons: 
     - icon: linkedin
       href: https://www.linkedin.com/in/kyeesha-wilcox-a84a36251
@@ -587,7 +587,6 @@ datatable(data_dict,
 
 ```{r}
 
-#| fig-height: 20
 #| out.width: "100%"
 
 #1. Top Importer
@@ -616,7 +615,7 @@ top_imp <- plot_ly(
 ) %>%
   layout(
     title = "1. South Africa was the top importer of Lesotho’s Basotho wool by total net weight (kg).",
-    margin = list(t = 75), #adds px of padding to the top
+    margin = list(t = 50), #adds px of padding to the top
     yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -629,7 +628,7 @@ Note: China's net weight values from 2016-2017 were listed as estimates.
 ## Biggest Year
 
 ```{r}
-#| fig-height: 20
+
 #| out.width: "100%"
 
 #2. Biggest Year
@@ -706,8 +705,10 @@ top_rev <- plot_ly(
 ) %>%
   layout(
     title = list(
-    text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023)."),
-    margin = list(t = 50), # adds pixels of padding to the top
+    text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023).",
+    yref = "container", # Ensures margin expands relative to the outer container
+    automargin = TRUE),   # Automatically adjusts margins to prevent overlap),
+  margin = list(t = 50), # adds pixels of padding to the top
   yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -720,7 +721,6 @@ Note: In 2018, Lesotho's government restricted wool trade with South Africa, res
 
 ```{r}
 
-#| fig-height: 25
 #| out.width: "100%"
 
 #creating column to highlight just Spring
@@ -746,10 +746,14 @@ top_ssn <- plot_ly(
   showlegend = FALSE # hides the legend
 ) %>%
   layout(
-    title = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
+    title = list(
+      text = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
+      yref = "container", # Ensures margin expands relative to the outer container
+      automargin = TRUE),   # Automatically adjusts margins to prevent overlap
     margin = list(t=20),
     yaxis = list(visible = FALSE) #hide y-axis
     )
+
 
 top_ssn
 ```
