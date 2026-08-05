@@ -24,9 +24,6 @@ library(sf) #for maps
 library(RColorBrewer) #for map color schemes
 library(scales)
 
-#----set working directory
-setwd("C://Users//hemis//OneDrive//Documents//GitHub//lesotho-basotho-wool//lesotho-basotho-wool//data")
-
 #----import data
 b_wool_2v <- read.csv("data/cleaned_basotho_wool.csv")
 
