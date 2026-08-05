@@ -33,24 +33,33 @@ data_dict <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basot
 #for the maps----
 
 merged_world <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_world.csv")
+
 merged_valid <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_valid.csv")
+
 merged_na <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_na.csv")
 
 
 #for the heat map----
 
 merged_all <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_allyrs_allcountries.csv")
+
 china <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
+
 india <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/india_allyrs.csv")
-south_africa <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/south_africa_allyrs.csv")            
+
+south_africa <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/south_africa_allyrs.csv")
+
 uruguay <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/uruguay_allyrs.csv")
 
 
 #for the takeaways----
 
 importer <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/importer.csv")
+
 top_year <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/top_year.csv")
+
 most_revenue <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/most_revenue.csv")
+
 busy_season <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/busy_season.csv")
 
 ```
@@ -583,11 +592,12 @@ datatable(data_dict,
 # Takeaways
 
 ::: panel-tabset
+
 ## Top Importer
 
 ```{r}
 
-#| out.width: "100%"
+#| out.height: "100%"
 
 #1. Top Importer
 
@@ -615,7 +625,7 @@ top_imp <- plot_ly(
 ) %>%
   layout(
     title = "1. South Africa was the top importer of Lesotho’s Basotho wool by total net weight (kg).",
-    margin = list(t = 50), #adds px of padding to the top
+    margin = list(t =75), #adds 75 px of padding to the top
     yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -628,7 +638,7 @@ Note: China's net weight values from 2016-2017 were listed as estimates.
 ## Biggest Year
 
 ```{r}
-
+#| fig-height: 20
 #| out.width: "100%"
 
 #2. Biggest Year
@@ -655,7 +665,8 @@ top_yr <- plot_ly(
            paste0("<span style='color:#b2182b;'>", "(", wgt_pctchg, "%)", "</span>") # if no
            )),
   textposition = "outside", #where I want to put label
-  textfont = list(weight = "bold"), 
+  textfont = list(weight = "bold"),
+  cliponaxis = FALSE, #prevents text label from being clipped
   showlegend = FALSE
 ) %>%
   layout(
@@ -676,8 +687,8 @@ Note: In 2018, Lesotho's government restricted wool trade with South Africa, res
 
 ```{r}
 
-#| fig-height: 25
-#| out.width: "100%"
+#| out.width: "100%" #since top is cut off
+
 
 #creating column to highlight just 2023
 revenue <- most_revenue %>%
@@ -700,14 +711,14 @@ top_rev <- plot_ly(
            paste0("<span style='color:#b2182b;'>", "(", value_pctchg, "%)", "</span>") # if no
            )),
   textposition = "outside", #where I want to put label
-  textfont = list(weight = "bold"), 
+  textfont = list(weight = "bold"),
+  cliponaxis = FALSE, #prevents text label from being clipped
   showlegend = FALSE
 ) %>%
   layout(
     title = list(
-    text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023).",
-    yref = "container", # Ensures margin expands relative to the outer container
-    automargin = TRUE),   # Automatically adjusts margins to prevent overlap),
+    text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023)."),
+    margin = list(t = 75),
   yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -720,7 +731,7 @@ Note: In 2018, Lesotho's government restricted wool trade with South Africa, res
 
 ```{r}
 
-#| out.width: "100%"
+#| out.height: "100%" #since some of top is cut off
 
 #creating column to highlight just Spring
 season <- busy_season %>%
@@ -745,13 +756,10 @@ top_ssn <- plot_ly(
   showlegend = FALSE # hides the legend
 ) %>%
   layout(
-    title = list(
-      text = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
-      yref = "container", # Ensures margin expands relative to the outer container
-      automargin = TRUE),   # Automatically adjusts margins to prevent overlap
+    title = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
+    margin = list(t = 75),  # adds 50 pixels of padding to the top
     yaxis = list(visible = FALSE) #hide y-axis
     )
-
 
 top_ssn
 ```
