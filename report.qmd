@@ -1,0 +1,743 @@
+---
+title: "Lesotho's Basotho Wool Trade, 2010-2024"
+author: "Kyeesha M. Wilcox"
+date-modified: today
+format:
+  dashboard:
+    scrollable: true
+    nav-buttons: 
+    - icon: linkedin
+      href: https://www.linkedin.com/in/kyeesha-wilcox-a84a36251
+      aria-label: LinkedIn
+    theme: United #view others: https://bootswatch.com/
+---
+
+```{r}
+
+#----import libraries
+library(tidyverse)
+library(DT)
+library(gt)
+library(formattable)
+library(plotly) #interactive visualizations
+library(sf) #for maps
+library(RColorBrewer) #for map color schemes
+library(scales)
+
+#----set working directory
+setwd("C:\\Users\hemis\\OneDrive\\Documents\\GitHub\\lesotho-basotho-wool\lesotho-basotho-wool")
+
+#----import data
+b_wool_2v <- read.csv("cleaned_basotho_wool.csv")
+
+data_dict <- read.csv("cleaned_data_dictionary.csv")
+
+#for the maps
+merged_world <- read.csv("merged_world.csv")
+
+merged_valid <- read.csv("merged_valid.csv")
+
+merged_na <- read.csv("merged_na.csv")
+
+#for the heat map
+merged_all <- read.csv("merged_allyrs_allcountries.csv")
+
+china <- read.csv("china_allyrs.csv")
+
+india <- read.csv("india_allyrs.csv")
+
+south_africa <- read.csv("south_africa_allyrs.csv")
+                 
+uruguay <- read.csv("uruguay_allyrs.csv")
+
+#for the takeaways
+importer <- read.csv("importer.csv")
+  
+top_year <- read.csv("top_year.csv")
+  
+most_revenue <- read.csv("most_revenue.csv")
+
+busy_season <- read.csv("busy_season.csv")
+
+```
+
+# Map
+
+::::::: {layout-ncol="2"}
+::: panel-tabset
+### Net Weight (kg)
+
+```{r}
+
+#| title: Net Weight (kg)
+
+# light grey boundaries
+l <- list(color = toRGB("gray"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  showland = TRUE,
+  landcolor = toRGB("gray"),
+  showcountries = TRUE,
+  countrycolor = toRGB("gray"),
+  projection = list(type = 'Winkel-Tripel')
+)
+
+#visualize and animate map
+
+fig <- plot_ly(
+  data = merged_world, 
+  type ='choropleth', 
+  locations=merged_world$CODE,
+  frame = ~year, # for animation
+  showscale = TRUE,
+  colorbar = list (
+      title = list(text = 'Total Net Weight (kg)')
+    )
+  )
+
+fig <- fig %>%
+  #base map (to fill in missing regions with gray area)
+  add_trace(
+    data = merged_world,
+    type = "choropleth",
+    locations = ~CODE,
+    z = rep(1, nrow(merged_world)), #dummy constant value to force fill
+    colorscale = list(c(0, "gray"), c(1, "gray")),
+    marker = list(line = list(color = toRGB("black"), width = 0.5)),
+    showscale = FALSE, #hide dummy legend
+    hoverinfo = "text",
+    text = ~paste(COUNTRY, ": No Data")
+  ) %>%
+#main data
+  add_trace(
+    data = merged_valid,
+    type = "choropleth",
+    locations = ~CODE, 
+    marker = list(line = l),
+    z = ~total_netwgt_kgs, 
+    color = ~total_netwgt_kgs, 
+    colorscale = 'RdPu',
+    text = ~country
+  )
+
+fig <- fig %>% layout(
+  title = 'Total Net Weight by Country',
+  geo = list(
+    scope = "world",
+    #landmass basemap
+    showland = TRUE,
+    landcolor = toRGB("gray50"), # changes the color of valid countries with no data
+    #ocean basemap
+    showocean = TRUE,
+    oceancolor = toRGB("lightblue")
+  )
+)
+
+fig
+
+```
+
+### Revenue (USD \$)
+
+```{r}
+#| title: Revenue (USD)
+
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  showland = TRUE,
+  landcolor = toRGB("gray"),
+  showcountries = TRUE,
+  countrycolor = toRGB("gray"),
+  projection = list(type = 'Winkel-Tripel')
+)
+
+#visualize and animate map
+
+fig <- plot_ly(
+  data = merged_world, 
+  type ='choropleth', 
+  locations=merged_world$CODE,
+  frame = ~year, # for animation
+  showscale = TRUE,
+  colorbar = list (
+    title = list(text = 'Total Revenue (USD $)')
+  )
+)
+
+fig <- fig %>%
+  #base map (to fill in missing regions with gray area)
+  add_trace(
+    data = merged_world,
+    type = "choropleth",
+    locations = ~CODE,
+    z = rep(1, nrow(merged_world)), #dummy constant value to force fill
+    colorscale = list(c(0, "gray"), c(1, "gray")),
+    marker = list(line = list(color = toRGB("black"), width = 0.5)),
+    showscale = FALSE, #hide dummy legend
+    hoverinfo = "text",
+    text = ~paste(COUNTRY, ": No Data")
+  ) %>%
+  #main data
+  add_trace(
+    data = merged_valid,
+    type = "choropleth",
+    locations = ~CODE, 
+    marker = list(line = l),
+    z = ~total_value_usd, 
+    color = ~total_value_usd, 
+    colorscale = 'RdPu',
+    text = ~country
+  )
+
+fig <- fig %>% layout(
+  title = 'Total Revenue by Country and Year',
+  geo = list(
+    scope = "world",
+    #landmass basemap
+    showland = TRUE,
+    landcolor = toRGB("gray50"), # changes the color of valid countries with no data
+    #ocean basemap
+    showocean = TRUE,
+    oceancolor = toRGB("lightblue")
+  )
+)
+
+fig
+  
+```
+:::
+
+::::: panel-tabset
+### Net Weight (kg)
+
+::: panel-tabset
+#### All
+
+```{r}
+#| title: All
+
+merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(merged_all, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = net_wgt_kgs)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "Seasonality Trends in Total Net Weight of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### China
+
+```{r}
+#| title: China
+
+china$month_abb <- factor(china$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(china, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = net_wgt_kgs)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "China's Seasonality Trends in Total Net Weight of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### India
+
+```{r}
+#| title: India
+
+india$month_abb <- factor(india$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(india, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = net_wgt_kgs)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "India's Seasonality Trends in Total Net Weight of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### South Africa
+
+```{r}
+#| title: South Africa
+
+south_africa$month_abb <- factor(south_africa$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(south_africa, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = net_wgt_kgs)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "South Africa's Seasonality Trends in Total Net Weight of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### Uruguay
+
+```{r}
+#| title: Uruguay
+
+uruguay$month_abb <- factor(uruguay$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(uruguay, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = net_wgt_kgs)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "Uruguay's Seasonality Trends in Total Net Weight of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+:::
+
+### Revenue (USD \$)
+
+::: panel-tabset
+#### All
+
+```{r}
+#| title: All
+
+merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(merged_all, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = primary_value_usd)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "Seasonality Trends in Total Revenue of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### China
+
+```{r}
+#| title: China
+
+china$month_abb <- factor(china$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(china, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = primary_value_usd)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "China's Seasonality Trends in Total Revenue of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### India
+
+```{r}
+#| title: India
+
+india$month_abb <- factor(india$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(india, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = primary_value_usd)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "India's Seasonality Trends in Total Revenue of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### South Africa
+
+```{r}
+#| title: South Africa
+
+south_africa$month_abb <- factor(south_africa$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(south_africa, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = primary_value_usd)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "South Africa's Seasonality Trends in Total Revenue of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+
+#### Uruguay
+
+```{r}
+#| title: Uruguay
+
+uruguay$month_abb <- factor(uruguay$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+
+p <- ggplot(uruguay, aes(x=month_abb, y=year)) +
+  geom_tile(aes(fill = primary_value_usd)) +
+  scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
+  scale_y_reverse(breaks = seq(2010, 2024, by = 1)) + #reverse y-axis and show each year
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+                axis.title.y = element_blank()) +
+  labs(
+    title = "Uruguay's Seasonality Trends in Total Revenue of Imports")
+
+ggplotly(p) %>%
+  layout(
+    title = list(size = 20),
+    xaxis = list(side = "top"),
+    yaxis = list(autorange = TRUE),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+:::
+
+```{r}
+#closing the revenue tabset
+```
+:::::
+
+```{r}
+#closing column 2's section
+```
+:::::::
+
+```{r}
+#closing the layoutn-col section
+```
+
+# Data
+
+## Row {height="100%"}
+
+::: panel-tabset
+### Dataset
+
+```{r}
+
+#| title: Dataset
+#| echo: false
+
+datatable(b_wool_2v,
+          filter = "top",
+          options = list(
+            pageLength = 30
+          )) %>%
+  formatRound(columns = c("net_wgt_kgs", "net_wgt_lbs", "primary_value_usd"), digits = 2) 
+
+```
+
+### Data Dictionary
+
+```{r}
+
+#| title: Data Dictionary
+#| echo: false
+
+datatable(data_dict,
+          filter = "top",
+          options = list(
+            pageLength = 30
+          ))
+
+```
+:::
+
+# Takeaways
+
+::: panel-tabset
+## Top Importer
+
+```{r}
+
+#| out.height: "100%"
+
+#1. Top Importer
+
+#creating column to highlight just South Africa
+importer <- importer %>%
+  mutate(top_imp = if_else(country == "South Africa", "yes", "no"))
+
+#define colors
+color_importer <- c("yes" = "#88419d", "no" = "gray40")
+
+#bar chart in plotly
+top_imp <- plot_ly(
+  data = importer,
+  x = ~country,
+  y = ~total_netwgt_kgs,
+  type = "bar",
+  color = ~top_imp,
+  colors = color_importer,
+  text = ~paste0(format(total_netwgt_kgs, big.mark = ","), "<br>", #value I want to show with commas
+    paste0("($", format(total_value_usd, big.mark = ","), " USD)")),
+  textposition = "outside", #where I want to put label
+  textfont = list(weight = "bold"), 
+  cliponaxis = FALSE, #prevents text label from being clipped
+  showlegend = FALSE # hides the legend
+) %>%
+  layout(
+    title = "1. South Africa was the top importer of Lesotho’s Basotho wool by total net weight (kg).",
+    margin = list(t =75), #adds 75 px of padding to the top
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+top_imp
+
+```
+
+Note: China's net weight values from 2016-2017 were listed as estimates.
+
+## Biggest Year
+
+```{r}
+#| fig-height: 20
+#| out.width: "100%"
+
+#2. Biggest Year
+
+#creating column to highlight just 2020
+top_year <- top_year %>%
+  mutate(top_yr = if_else(year == "2020", "yes", "no"))
+
+
+#define colors
+color_year <- c("yes" = "#88419d", "no" = "gray40")
+
+#bar chart in plotly
+top_yr <- plot_ly(
+  data = top_year,
+  x = ~year,
+  y = ~total_netwgt_kgs,
+  type = "bar",
+  color = ~top_yr,
+  colors = color_year,
+  text = ~paste0(format(total_netwgt_kgs, big.mark = ","), "<br>", #two line label
+    ifelse(wgt_pctchg > 0,
+           paste0("<span style='color:#2166ac;'>", "(", wgt_pctchg, "%)", "</span>"), #if yes
+           paste0("<span style='color:#b2182b;'>", "(", wgt_pctchg, "%)", "</span>") # if no
+           )),
+  textposition = "outside", #where I want to put label
+  textfont = list(weight = "bold"), 
+  showlegend = FALSE
+) %>%
+  layout(
+    title = list(
+      text = "2. 2020 was the biggest year for Lesotho’s Basotho wool trade, with a +166% boost in the amount of wool traded.",
+    subtitle = list(
+      text = "Due to the governmental restriction on wool exports between 2018-2019, the net weight of Lesotho’s Basothol wool trade decreased by -72% in 2018 and increased by +47% in 2019.")),
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+top_yr
+
+```
+
+Note: In 2018, Lesotho's government restricted wool trade with South Africa, resulting in a 72% decrease in the net weight of imports for the year.
+
+## Most Revenue
+
+```{r}
+
+#| out.width: "100%" #since top is cut off
+
+
+#creating column to highlight just 2023
+revenue <- most_revenue %>%
+  mutate(most_rev = if_else(year == "2023", "yes", "no"))
+
+#define colors
+color_year <- c("yes" = "#88419d", "no" = "gray40")
+
+#bar chart in plotly
+top_rev <- plot_ly(
+  data = revenue,
+  x = ~year,
+  y = ~total_value_usd,
+  type = "bar",
+  color = ~most_rev,
+  colors = color_year,
+  text = ~paste0("$", format(total_value_usd, big.mark = ","), "<br>", #two line label
+    ifelse(value_pctchg > 0,
+           paste0("<span style='color:#2166ac;'>", "(", value_pctchg, "%)", "</span>"), #if yes
+           paste0("<span style='color:#b2182b;'>", "(", value_pctchg, "%)", "</span>") # if no
+           )),
+  textposition = "outside", #where I want to put label
+  textfont = list(weight = "bold"), 
+  showlegend = FALSE
+) %>%
+  layout(
+    title = list(
+    text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023)."),
+    margin = list(t = 75),
+  yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+top_rev
+```
+
+Note: In 2018, Lesotho's government restricted wool trade with South Africa, resulting in a 21% decrease in revenue for the year.
+
+## Busiest Season
+
+```{r}
+
+#| out.height: "100%" #since some of top is cut off
+
+#creating column to highlight just Spring
+season <- busy_season %>%
+  mutate(top_season = if_else(sh_season == "Southern Hemisphere Spring", "yes", "no"))
+
+#define colors
+color_season <- c("yes" = "#88419d", "no" = "gray40")
+
+#bar chart in plotly
+top_ssn <- plot_ly(
+  data = season,
+  x = ~sh_season,
+  y = ~total_netwgt_kgs,
+  type = "bar",
+  color = ~top_season,
+  colors = color_season,
+  text = ~paste0(format(total_netwgt_kgs, big.mark = ","), "<br>", #value I want to show with commas
+    paste0("($", format(total_value_usd, big.mark = ","), " USD)")),
+  textposition = "outside", #where I want to put label
+  textfont = list(weight = "bold"),
+  cliponaxis = FALSE, #prevents text label from being clipped
+  showlegend = FALSE # hides the legend
+) %>%
+  layout(
+    title = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
+    margin = list(t = 75),  # adds 50 pixels of padding to the top
+    yaxis = list(visible = FALSE) #hide y-axis
+    )
+
+top_ssn
+```
+
+Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
+:::
+
+rsconnect::writeManifest()

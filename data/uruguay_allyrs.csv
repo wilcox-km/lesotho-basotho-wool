@@ -1,0 +1,17 @@
+"country","year","iso_code","continent","net_wgt_kgs","net_wgt_lbs","is_net_wgt_estimated","primary_value_usd","month_abb","month","month_year","nh_season","sh_season"
+"Uruguay",2010,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2011,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2012,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2013,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2014,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2015,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2016,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2017,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2018,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2019,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2020,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2021,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2022,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"Uruguay",2023,"URY","South America",24051.7,53024.38,FALSE,138626.67,"Jan",1,"Jan 2023","Northern Hemisphere Winter","Southern Hemisphere Summer"
+"Uruguay",2023,"URY","South America",25932,57169.69,FALSE,75925.52,"May",5,"May 2023","Northern Hemisphere Spring","Southern Hemisphere Fall"
+"Uruguay",2024,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
