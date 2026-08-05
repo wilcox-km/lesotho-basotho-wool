@@ -25,36 +25,36 @@ library(RColorBrewer) #for map color schemes
 library(scales)
 
 #----import data
-b_wool_2v <- read.csv("data/cleaned_basotho_wool.csv")
+b_wool_2v <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/cleaned_basotho_wool.csv")
 
-data_dict <- read.csv("data/cleaned_data_dictionary.csv")
+data_dict <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/cleaned_data_dictionary.csv")
 
 #for the maps
-merged_world <- read.csv("data/merged_world.csv")
+merged_world <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_world.csv")
 
-merged_valid <- read.csv("data/merged_valid.csv")
+merged_valid <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_valid.csv")
 
-merged_na <- read.csv("data/merged_na.csv")
+merged_na <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_na.csv")
 
 #for the heat map
-merged_all <- read.csv("data/merged_allyrs_allcountries.csv")
+merged_all <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/cleaned_data_dictionary.csv")
 
-china <- read.csv("data/china_allyrs.csv")
+china <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
 
-india <- read.csv("data/india_allyrs.csv")
+india <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
 
-south_africa <- read.csv("data/south_africa_allyrs.csv")
+south_africa <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/south_africa_allyrs.csv")
                  
-uruguay <- read.csv("data/uruguay_allyrs.csv")
+uruguay <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/uruguay_allyrs.csv")
 
 #for the takeaways
-importer <- read.csv("data/importer.csv")
+importer <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/importer.csv")
   
-top_year <- read.csv("data/top_year.csv")
+top_year <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/top_year.csv")
   
-most_revenue <- read.csv("data/most_revenue.csv")
+most_revenue <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/most_revenue.csv")
 
-busy_season <- read.csv("data/busy_season.csv")
+busy_season <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/busy_season.csv")
 
 ```
 
