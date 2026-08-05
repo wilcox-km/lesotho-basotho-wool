@@ -708,7 +708,6 @@ top_rev <- plot_ly(
     text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023).",
     yref = "container", # Ensures margin expands relative to the outer container
     automargin = TRUE),   # Automatically adjusts margins to prevent overlap),
-  margin = list(t = 50), # adds pixels of padding to the top
   yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -750,7 +749,6 @@ top_ssn <- plot_ly(
       text = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
       yref = "container", # Ensures margin expands relative to the outer container
       automargin = TRUE),   # Automatically adjusts margins to prevent overlap
-    margin = list(t=20),
     yaxis = list(visible = FALSE) #hide y-axis
     )
 
