@@ -37,7 +37,7 @@ merged_valid <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-ba
 merged_na <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_na.csv")
 
 #for the heat map
-merged_all <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/cleaned_data_dictionary.csv")
+merged_all <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/merged_allyrs_allcountries.csv")
 
 china <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-basotho-wool/refs/heads/main/data/china_allyrs.csv")
 
