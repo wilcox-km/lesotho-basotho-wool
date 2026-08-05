@@ -616,7 +616,7 @@ top_imp <- plot_ly(
 ) %>%
   layout(
     title = "1. South Africa was the top importer of Lesotho’s Basotho wool by total net weight (kg).",
-    margin = list(t =75), #adds 75 px of padding to the top
+    margin = list(t = 15), #adds px of padding to the top
     yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -707,7 +707,7 @@ top_rev <- plot_ly(
   layout(
     title = list(
     text = "3. Lesotho received the most revenue in 2023 (with a +21% jump in $$ made between 2022-2023)."),
-    margin = list(t = 200), # adds pixels of padding to the top
+    margin = list(t = -200), # adds pixels of padding to the top
   yaxis = list(visible = FALSE) #hide y-axis
     )
 
@@ -747,7 +747,6 @@ top_ssn <- plot_ly(
 ) %>%
   layout(
     title = "4. Spring (Sep-Nov) was the busiest season for imports (by net weight) and for revenue.",
-    margin = list(t = 200),  # adds pixels of padding to the top
     yaxis = list(visible = FALSE) #hide y-axis
     )
 
