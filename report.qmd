@@ -66,8 +66,6 @@ busy_season <- read.csv("https://raw.githubusercontent.com/wilcox-km/lesotho-bas
 
 ```{r}
 
-#| title: Net Weight (kg)
-
 # light grey boundaries
 l <- list(color = toRGB("gray"), width = 0.5)
 
@@ -137,10 +135,9 @@ fig
 
 ```
 
-### Revenue (USD \$)
+### Revenue (USD $)
 
 ```{r}
-#| title: Revenue (USD)
 
 # light grey boundaries
 l <- list(color = toRGB("grey"), width = 0.5)
@@ -225,8 +222,6 @@ fig
 merged_all <- merged_all %>%
   mutate(month_abb = factor(merged_all$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis -- DOESN'T WORK IN GITHUB
-
 p <- ggplot(merged_all, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -257,8 +252,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 # level order so Jan is at the beginning of the y-axis
 china <- china %>%
   mutate(month_abb = factor(china$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
-
-# china$month_abb <- factor(china$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
 
 p <- ggplot(china, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
@@ -291,8 +284,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 india <- india %>%
   mutate(month_abb = factor(india$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# india$month_abb <- factor(india$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
-
 p <- ggplot(india, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -324,8 +315,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 south_africa <- south_africa %>%
   mutate(month_abb = factor(south_africa$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# south_africa$month_abb <- factor(south_africa$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
-
 p <- ggplot(south_africa, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -356,8 +345,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 # level order so Jan is at the beginning of the y-axis
 uruguay <- uruguay %>%
   mutate(month_abb = factor(uruguay$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
-
-# uruguay$month_abb <- factor(uruguay$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
 
 p <- ggplot(uruguay, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
@@ -394,8 +381,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 merged_all <- merged_all %>%
   mutate(month_abb = factor(merged_all$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
-
 p <- ggplot(merged_all, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = primary_value_usd)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -426,8 +411,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 # level order so Jan is at the beginning of the y-axis
 china <- china %>%
   mutate(month_abb = factor(china$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
-
-# china$month_abb <- factor(china$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
 
 p <- ggplot(china, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = primary_value_usd)) +
@@ -460,8 +443,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 india <- india %>%
   mutate(month_abb = factor(india$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# india$month_abb <- factor(india$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
-
 p <- ggplot(india, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = primary_value_usd)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -493,8 +474,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 south_africa <- south_africa %>%
   mutate(month_abb = factor(south_africa$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
 
-# south_africa$month_abb <- factor(south_africa$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
-
 p <- ggplot(south_africa, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = primary_value_usd)) +
   scale_fill_distiller(palette = "RdPu", direction = 1 ,labels = comma) +
@@ -525,8 +504,6 @@ Note: In the Southern Hemisphere, the seasons are generally as followed: Summer 
 # level order so Jan is at the beginning of the y-axis
 uruguay <- uruguay %>%
   mutate(month_abb = factor(uruguay$month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
-
-# uruguay$month_abb <- factor(uruguay$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
 
 p <- ggplot(uruguay, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = primary_value_usd)) +
@@ -609,7 +586,8 @@ datatable(data_dict,
 
 ```{r}
 
-#| out.height: "100%"
+#| fig-height: 20
+#| out.width: "100%"
 
 #1. Top Importer
 
@@ -698,8 +676,8 @@ Note: In 2018, Lesotho's government restricted wool trade with South Africa, res
 
 ```{r}
 
-#| out.width: "100%" #since top is cut off
-
+#| fig-height: 25
+#| out.width: "100%"
 
 #creating column to highlight just 2023
 revenue <- most_revenue %>%
@@ -741,7 +719,8 @@ Note: In 2018, Lesotho's government restricted wool trade with South Africa, res
 
 ```{r}
 
-#| out.height: "100%" #since some of top is cut off
+#| fig-height: 25
+#| out.width: "100%"
 
 #creating column to highlight just Spring
 season <- busy_season %>%
@@ -776,5 +755,3 @@ top_ssn
 
 Note: In the Southern Hemisphere, the seasons are generally as followed: Summer = Dec-Feb, Fall = Mar-May, Winter = Jun-Aug, Spring = Sep-Nov.
 :::
-
-rsconnect::writeManifest()
