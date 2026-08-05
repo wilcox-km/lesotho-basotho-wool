@@ -221,7 +221,11 @@ fig
 ```{r}
 #| title: All
 
-merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis
+# level order so Jan is at the top of the y-axis
+merged_all <- merged_all %>%
+  mutate(month_abb = factor(month_abb, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")))
+
+# merged_all$month_abb <- factor(merged_all$month_abb, levels = (month.abb)) # level order so Jan is at the top of the y-axis -- DOESN'T WORK IN GITHUB
 
 p <- ggplot(merged_all, aes(x=month_abb, y=year)) +
   geom_tile(aes(fill = net_wgt_kgs)) +
